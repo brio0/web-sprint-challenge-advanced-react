@@ -84,7 +84,11 @@ export default class AppClass extends React.Component {
       if (this.state.index === 0 || this.state.index === 1 || this.state.index === 2) {
         return this.state.index
       } else {
-        return this.setState({ ...this.state, index: this.state.index - 3 })
+        return this.setState({
+          ...this.state,
+          index: this.state.index - 3,
+          steps: this.state.steps + 1
+        })
       }
 
     }
@@ -92,19 +96,31 @@ export default class AppClass extends React.Component {
       if (this.state.index === 6 || this.state.index === 7 || this.state.index === 8) {
         return this.state.index
       }
-      return this.setState({ ...this.state, index: this.state.index + 3 })
+      return this.setState({
+        ...this.state,
+        index: this.state.index + 3,
+        steps: this.state.steps + 1
+      })
     }
     if (direction === 'left') {
       if (this.state.index === 0 || this.state.index === 3 || this.state.index === 6) {
         return this.state.index
       }
-      return this.setState({ ...this.state, index: this.state.index - 1 })
+      return this.setState({
+        ...this.state,
+        index: this.state.index - 1,
+        steps: this.state.steps + 1
+      })
     }
     if (direction === 'right') {
       if (this.state.index === 2 || this.state.index === 5 || this.state.index === 8) {
         return this.state.index
       }
-      return this.setState({ ...this.state, index: this.state.index + 1 })
+      return this.setState({
+        ...this.state,
+        index: this.state.index + 1,
+        steps: this.state.steps + 1
+      })
     }
 
   }
