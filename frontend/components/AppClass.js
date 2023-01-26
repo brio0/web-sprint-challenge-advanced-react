@@ -1,11 +1,12 @@
 import React from 'react'
+import axios from 'axios'
 
 // Suggested initial states
 const initialMessage = ''
 const initialEmail = ''
 const initialSteps = 0
 const initialIndex = 4 // the index the "B" is at
-const initialCoordinates = [2, 2]
+
 
 
 const initialState = {
@@ -13,9 +14,10 @@ const initialState = {
   email: initialEmail,
   index: initialIndex,
   steps: initialSteps,
-  coordinates: initialCoordinates
 
 }
+
+const URL = 'http://localhost:9000/api/result'
 
 export default class AppClass extends React.Component {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
@@ -134,10 +136,23 @@ export default class AppClass extends React.Component {
 
   onChange = (evt) => {
     // You will need this to update the value of the input.
+    this.setState({
+      email: evt.target.value
+    })
   }
+
 
   onSubmit = (evt) => {
     // Use a POST request to send a payload to the server.
+    evt.preventDefault();
+    axios.post(URL, { name: this.state.email })
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
   }
 
   render() {
@@ -171,8 +186,8 @@ export default class AppClass extends React.Component {
           <button id="down" onClick={() => { this.getNextIndex('down') }}>DOWN</button>
           <button id="reset" onClick={() => { this.reset() }}>reset</button>
         </div>
-        <form>
-          <input id="email" type="email" placeholder="type email"></input>
+        <form onSubmit={this.onSubmit}>
+          <input id="email" type="email" placeholder="type email" onChange={this.onChange}></input>
           <input id="submit" type="submit"></input>
         </form>
       </div>
