@@ -73,7 +73,7 @@ export default class AppClass extends React.Component {
       email: initialEmail,
       index: initialIndex,
       steps: initialSteps,
-      coordinates: initialCoordinates
+
     })
   }
 
@@ -145,9 +145,12 @@ export default class AppClass extends React.Component {
   onSubmit = (evt) => {
     // Use a POST request to send a payload to the server.
     evt.preventDefault();
-    axios.post(URL, { name: this.state.email })
+
+    const coordinate = this.getXY()
+    axios.post(URL, { x: coordinate[0], y: coordinate[1], steps: this.state.steps, email: this.state.email })
       .then(res => {
-        console.log(res)
+        this.setState({ ...this.state, email: this.state.email })
+        this.reset()
       })
       .catch(err => {
         console.log(err)
@@ -187,7 +190,7 @@ export default class AppClass extends React.Component {
           <button id="reset" onClick={() => { this.reset() }}>reset</button>
         </div>
         <form onSubmit={this.onSubmit}>
-          <input id="email" type="email" placeholder="type email" onChange={this.onChange}></input>
+          <input id="email" type="email" placeholder="type email" onChange={this.onChange} value={this.state.email}></input>
           <input id="submit" type="submit"></input>
         </form>
       </div>
