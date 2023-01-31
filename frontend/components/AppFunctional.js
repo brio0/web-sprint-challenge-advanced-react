@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 
 // Suggested initial states
 const initialMessage = ''
@@ -123,9 +124,10 @@ export default function AppFunctional(props) {
 
 
   const onChange = (evt) => {
+
     // You will need this to update the value of the input.
     setState({
-      ...this.state,
+      ...state,
       email: evt.target.value
     })
   }
@@ -134,12 +136,16 @@ export default function AppFunctional(props) {
   const onSubmit = (evt) => {
     // Use a POST request to send a payload to the server.
     evt.preventDefault();
-
     const coordinate = getXY()
-    axios.post(URL, { x: coordinate[0], y: coordinate[1], steps: state.steps, email: state.email })
+    const userData = {
+      x: coordinate[0],
+      y: coordinate[1],
+      steps: state.steps,
+      email: state.email
+    }
+    axios.post(URL, userData)
       .then(res => {
-        setState({ ...state, email: state.email })
-        reset()
+        console.log(res.data)
       })
       .catch(err => {
         console.log(err)
@@ -164,7 +170,7 @@ export default function AppFunctional(props) {
         }
       </div>
       <div className="info">
-        <h3 id="message"></h3>
+        <h3 id="message">{state.message}</h3>
       </div>
       <div id="keypad">
         <button id="left" onClick={() => { getNextIndex('left') }}>LEFT</button>
@@ -173,7 +179,7 @@ export default function AppFunctional(props) {
         <button id="down" onClick={() => { getNextIndex('down') }}>DOWN</button>
         <button id="reset" onClick={() => { reset() }}>reset</button>
       </div>
-      <form onSubmit={onSubmit}>
+      <form >
         <input id="email" type="email" placeholder="type email" onChange={onChange} value={state.email}></input>
         <input id="submit" type="submit"></input>
       </form>

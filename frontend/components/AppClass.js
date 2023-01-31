@@ -137,20 +137,30 @@ export default class AppClass extends React.Component {
   onChange = (evt) => {
     // You will need this to update the value of the input.
     this.setState({
+      ...this.state,
       email: evt.target.value
     })
   }
 
 
+
   onSubmit = (evt) => {
     // Use a POST request to send a payload to the server.
     evt.preventDefault();
+    const submitReset = this.setState({
+      ...this.state,
+      email: initialEmail,
+      index: initialIndex,
+      steps: initialSteps,
 
+    })
     const coordinate = this.getXY()
-    axios.post(URL, { x: coordinate[0], y: coordinate[1], steps: this.state.steps, email: this.state.email })
+    axios.post(URL, { x: coordinate[0], y: coordinate[1], steps: this.state.steps, email: this.state.email, })
       .then(res => {
-        this.setState({ ...this.state, email: this.state.email })
-        this.reset()
+        this.setState({ ...this.state, message: res.data.message })
+        this.submitReset()
+
+
       })
       .catch(err => {
         console.log(err)
@@ -180,7 +190,7 @@ export default class AppClass extends React.Component {
           }
         </div>
         <div className="info">
-          <h3 id="message"></h3>
+          <h3 id="message">{this.state.message}</h3>
         </div>
         <div id="keypad">
           <button id="left" onClick={() => { this.getNextIndex('left') }}>LEFT</button>
