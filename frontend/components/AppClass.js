@@ -143,6 +143,7 @@ export default class AppClass extends React.Component {
   }
 
 
+  setResponseError = err => this.setState({ ...this.state, message: err.response.data.message })
 
   onSubmit = (evt) => {
     // Use a POST request to send a payload to the server.
@@ -158,13 +159,11 @@ export default class AppClass extends React.Component {
     axios.post(URL, { x: coordinate[0], y: coordinate[1], steps: this.state.steps, email: this.state.email, })
       .then(res => {
         this.setState({ ...this.state, message: res.data.message })
-        this.submitReset()
+        this.submitReset
 
 
       })
-      .catch(err => {
-        console.log(err)
-      })
+      .catch(this.setResponseError)
 
   }
 
