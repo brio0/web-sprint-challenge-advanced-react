@@ -166,7 +166,7 @@ export default function AppFunctional(props) {
       steps: state.steps,
       email: state.email
     }
-    const submitReset = setState({
+    const submitReset = () => setState({
       ...state,
       email: initialEmail,
 
