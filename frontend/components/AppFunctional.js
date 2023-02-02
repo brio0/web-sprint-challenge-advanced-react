@@ -7,6 +7,8 @@ const initialEmail = ''
 const initialSteps = 0
 const initialIndex = 4 // the index the "B" is at
 
+const URL = 'http://localhost:9000/api/result'
+
 export default function AppFunctional(props) {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
@@ -54,7 +56,7 @@ export default function AppFunctional(props) {
     // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
     // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
     // returns the fully constructed string.
-    return `Coordinates ${getXY()}`
+    return `Coordinates (${getXY()})`
 
 
   }
@@ -78,44 +80,64 @@ export default function AppFunctional(props) {
 
     if (direction === 'up') {
       if (state.index === 0 || state.index === 1 || state.index === 2) {
-        return state.index
+        return setState({
+          ...state,
+          index: state.index,
+          message: `You can't go up`
+        })
       } else {
         return setState({
           ...state,
           index: state.index - 3,
-          steps: state.steps + 1
+          steps: state.steps + 1,
+          message: ''
         })
       }
 
     }
     if (direction === 'down') {
       if (state.index === 6 || state.index === 7 || state.index === 8) {
-        return state.index
+        return setState({
+          ...state,
+          index: state.index,
+          message: `You can't go down`
+        })
       }
       return setState({
         ...state,
         index: state.index + 3,
-        steps: state.steps + 1
+        steps: state.steps + 1,
+        message: ''
       })
     }
     if (direction === 'left') {
       if (state.index === 0 || state.index === 3 || state.index === 6) {
-        return state.index
+        return setState({
+          ...state,
+          index: state.index,
+          message: `You can't go left`
+        })
       }
       return setState({
         ...state,
         index: state.index - 1,
-        steps: state.steps + 1
+        steps: state.steps + 1,
+        message: ''
       })
     }
     if (direction === 'right') {
       if (state.index === 2 || state.index === 5 || state.index === 8) {
-        return state.index
+        return setState({
+          ...state,
+          index: state.index,
+          message: `You can't go right`
+        })
       }
       return setState({
         ...state,
         index: state.index + 1,
-        steps: state.steps + 1
+        steps: state.steps + 1,
+        message: ''
       })
     }
 
@@ -131,6 +153,7 @@ export default function AppFunctional(props) {
       email: evt.target.value
     })
   }
+  const setResponseError = err => setState({ ...state, message: err.response.data.message })
 
 
   const onSubmit = (evt) => {
@@ -143,21 +166,34 @@ export default function AppFunctional(props) {
       steps: state.steps,
       email: state.email
     }
+    const submitReset = setState({
+      ...state,
+      email: initialEmail,
+
+    })
     axios.post(URL, userData)
       .then(res => {
-        console.log(res.data)
+        setState({ ...state, message: res.data.message })
+        submitReset()
       })
-      .catch(err => {
-        console.log(err)
-      })
+      .catch(setResponseError)
 
   }
+
+  const stepsMessage = () => {
+    if (state.steps === 1) {
+      return `You moved ${state.steps} time`
+    } else {
+      return `You moved ${state.steps} times`
+    }
+  }
+
 
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">{getXYMessage()}</h3>
-        <h3 id="steps">You moved {state.steps} times</h3>
+        <h3 id="steps">{stepsMessage()}</h3>
       </div>
       <div id="grid">
         {
@@ -179,7 +215,7 @@ export default function AppFunctional(props) {
         <button id="down" onClick={() => { getNextIndex('down') }}>DOWN</button>
         <button id="reset" onClick={() => { reset() }}>reset</button>
       </div>
-      <form >
+      <form onSubmit={onSubmit}>
         <input id="email" type="email" placeholder="type email" onChange={onChange} value={state.email}></input>
         <input id="submit" type="submit"></input>
       </form>

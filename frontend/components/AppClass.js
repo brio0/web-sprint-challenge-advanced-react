@@ -60,7 +60,7 @@ export default class AppClass extends React.Component {
     // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
     // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
     // returns the fully constructed string.
-    return `Coordinates ${this.getXY()}`
+    return `Coordinates (${this.getXY()})`
 
 
   }
@@ -84,44 +84,64 @@ export default class AppClass extends React.Component {
 
     if (direction === 'up') {
       if (this.state.index === 0 || this.state.index === 1 || this.state.index === 2) {
-        return this.state.index
+        return this.setState({
+          ...this.state,
+          index: this.state.index,
+          message: `You can't go up`
+        })
       } else {
         return this.setState({
           ...this.state,
           index: this.state.index - 3,
-          steps: this.state.steps + 1
+          steps: this.state.steps + 1,
+          message: ''
         })
       }
 
     }
     if (direction === 'down') {
       if (this.state.index === 6 || this.state.index === 7 || this.state.index === 8) {
-        return this.state.index
+        return this.setState({
+          ...this.state,
+          index: this.state.index,
+          message: `You can't go down`
+        })
       }
       return this.setState({
         ...this.state,
         index: this.state.index + 3,
-        steps: this.state.steps + 1
+        steps: this.state.steps + 1,
+        message: ''
       })
     }
     if (direction === 'left') {
       if (this.state.index === 0 || this.state.index === 3 || this.state.index === 6) {
-        return this.state.index
+        return this.setState({
+          ...this.state,
+          index: this.state.index,
+          message: `You can't go left`
+        })
       }
       return this.setState({
         ...this.state,
         index: this.state.index - 1,
-        steps: this.state.steps + 1
+        steps: this.state.steps + 1,
+        message: ''
       })
     }
     if (direction === 'right') {
       if (this.state.index === 2 || this.state.index === 5 || this.state.index === 8) {
-        return this.state.index
+        return this.setState({
+          ...this.state,
+          index: this.state.index,
+          message: `You can't go right`
+        })
       }
       return this.setState({
         ...this.state,
         index: this.state.index + 1,
-        steps: this.state.steps + 1
+        steps: this.state.steps + 1,
+        message: ''
       })
     }
 
@@ -151,8 +171,6 @@ export default class AppClass extends React.Component {
     const submitReset = this.setState({
       ...this.state,
       email: initialEmail,
-      index: initialIndex,
-      steps: initialSteps,
 
     })
     const coordinate = this.getXY()
@@ -166,6 +184,13 @@ export default class AppClass extends React.Component {
       .catch(this.setResponseError)
 
   }
+  stepsMessage = () => {
+    if (this.state.steps === 1) {
+      return `You moved ${this.state.steps} time`
+    } else {
+      return `You moved ${this.state.steps} times`
+    }
+  }
 
   render() {
     const { className } = this.props
@@ -176,7 +201,7 @@ export default class AppClass extends React.Component {
       <div id="wrapper" className={className}>
         <div className="info">
           <h3 id="coordinates">{this.getXYMessage()}</h3>
-          <h3 id="steps">You moved {this.state.steps} times</h3>
+          <h3 id="steps">{this.stepsMessage()}</h3>
         </div>
         <div id="grid">
           {
