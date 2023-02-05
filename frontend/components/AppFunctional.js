@@ -160,10 +160,7 @@ export default function AppFunctional(props) {
     // Use a POST request to send a payload to the server.
     evt.preventDefault();
     const coordinate = getXY()
-    // const submitReset = setState({
-    //   ...state,
-    //   email: initialEmail,
-    // })
+
     axios.post(URL, { x: coordinate[0], y: coordinate[1], steps: state.steps, email: state.email })
       .then(res => {
         setState({

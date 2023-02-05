@@ -174,7 +174,7 @@ export default class AppClass extends React.Component {
 
     })
     const coordinate = this.getXY()
-    axios.post(URL, { x: coordinate[0], y: coordinate[1], steps: this.state.steps, email: this.state.email, })
+    axios.post(URL, { x: coordinate[0], y: coordinate[1], steps: this.state.steps, email: this.state.email })
       .then(res => {
         this.setState({ ...this.state, message: res.data.message })
         this.submitReset
