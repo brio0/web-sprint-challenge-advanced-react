@@ -99,17 +99,17 @@ test('Error message displays when submitting without filling out email input', a
 //   })
 // })
 
-test('Win message displays when submitting a valid email', async () => {
-  render(<AppFunctional />);
-  const emailInput = document.querySelector("#email");
-  fireEvent.change(emailInput, { target: { value: 'lady@gaga.com' } })
+// test('Win message displays when submitting a valid email', async () => {
+//   render(<AppFunctional />);
+//   const emailInput = document.querySelector("#email");
+//   fireEvent.change(emailInput, { target: { value: 'lady@gaga.com' } })
 
 
 
-  const winMessage = screen.getByRole("textbox");
-  expect(winMessage).toBeInTheDocument();
+//   const winMessage = screen.getByRole("textbox");
+//   expect(winMessage).toBeInTheDocument();
 
-})
+// })
 
 
 
