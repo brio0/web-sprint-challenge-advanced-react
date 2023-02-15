@@ -20,10 +20,10 @@ export default function AppFunctional(props) {
     steps: initialSteps,
   })
 
-  const getXY = () => {
+  const getXY = (idx) => {
     // It it not necessary to have a state to track the coordinates.
     // It's enough to know what index the "B" is at, to be able to calculate them.
-    switch (state.index) {
+    switch (idx) {
       case 0:
         return [1, 1];
       case 1:
@@ -159,14 +159,14 @@ export default function AppFunctional(props) {
   const onSubmit = (evt) => {
     // Use a POST request to send a payload to the server.
     evt.preventDefault();
-    const coordinate = getXY()
+    const coordinate = getXY(state.index)
 
     axios.post(URL, { x: coordinate[0], y: coordinate[1], steps: state.steps, email: state.email })
       .then(res => {
         setState({
           ...state,
           message: res.data.message,
-          email: initialEmail
+          email: ''
         })
       })
       .catch(setResponseError)
@@ -200,6 +200,7 @@ export default function AppFunctional(props) {
       </div>
       <div className="info">
         <h3 id="message">{state.message}</h3>
+        {console.log("rendered")}
       </div>
       <div id="keypad">
         <button id="left" onClick={() => { getNextIndex('left') }}>LEFT</button>
@@ -209,7 +210,7 @@ export default function AppFunctional(props) {
         <button id="reset" onClick={() => { reset() }}>reset</button>
       </div>
       <form onSubmit={onSubmit}>
-        <input id="email" type="email" placeholder="type email" onChange={onChange} value={state.email}></input>
+        <input id="email" placeholder="type email" onChange={onChange} value={state.email}></input>
         <input id="submit" type="submit"></input>
       </form>
     </div>

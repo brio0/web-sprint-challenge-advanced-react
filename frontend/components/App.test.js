@@ -1,6 +1,7 @@
 // Write your tests here
 import React from 'react'
 import AppClass from './AppClass'
+import AppFunctional from './AppFunctional'
 import { render, fireEvent, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
@@ -87,26 +88,26 @@ test('Error message displays when submitting without filling out email input', a
 })
 
 test('You cannot go up message displays when you are at the upper grid', async () => {
-  render(<AppClass />);
+  render(<AppFunctional />);
   const upButton = document.querySelector('#up');
   fireEvent.click(upButton);
   fireEvent.click(upButton);
 
   await waitFor(() => {
-    const cannotMessage = screen.queryByText(/you can't go/i)
+    const cannotMessage = screen.getByText(/you can't go up/i)
     expect(cannotMessage).toBeInTheDocument();
   })
 })
 
 test('Win message displays when submitting a valid email', async () => {
-  render(<AppClass />);
+  render(<AppFunctional />);
   const submitButton = document.querySelector('#submit');
   const emailInput = document.querySelector("#email");
   fireEvent.change(emailInput, { target: { value: 'lady@gaga.com' } })
   fireEvent.click(submitButton);
 
   await waitFor(() => {
-    const winMessage = screen.queryByText(/win/i);
+    const winMessage = screen.getByText(/lady win/i);
     expect(winMessage).toBeInTheDocument();
   })
 })
