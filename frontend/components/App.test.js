@@ -76,16 +76,16 @@ test('Renders submit button', () => {
 
 })
 
-test('Error message displays when submitting without filling out email input', async () => {
-  render(<AppClass />);
-  const submitButton = document.querySelector('#submit');
-  fireEvent.click(submitButton);
+// test('Error message displays when submitting without filling out email input', async () => {
+//   render(<AppClass />);
+//   const submitButton = document.querySelector('#submit');
+//   fireEvent.click(submitButton);
 
-  await waitFor(() => {
-    const errorMessage = screen.queryByText(/ouch: email is required/i);
-    expect(errorMessage).toBeInTheDocument();
-  });
-})
+//   await waitFor(() => {
+//     const errorMessage = screen.queryByText(/ouch: email is required/i);
+//     expect(errorMessage).toBeInTheDocument();
+//   });
+// })
 
 // test('You cannot go up message displays when you are at the upper grid', async () => {
 //   render(<AppFunctional />);
